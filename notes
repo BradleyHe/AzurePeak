@@ -1,0 +1,12 @@
+change window from 10 to 12
+percent difference between moving averages for every one hour
+minimum, mean, percentile, and maximum core usage for every one hour
+maintain global minimum and maximum
+bar graph comparing techniques
+
+techniques: 
+1: moving average
+2: every vm delayed by 5-15 minutes
+3: vm delayed every 15, 30, 45, 60 minutes
+4: vm delayed whenever moving average is 50-90% of global maximum
+5: moving average + or = 1, 2, 3 std
