@@ -73,7 +73,7 @@ def moving(data, start, end, window, delay, stdMultiplier):
 		df['limit'] = df['MA'] + df['STD'] * stdMultiplier
 
 		if(df.at[vmCreateTime, 'cores'] > df.at[vmCreateTime, 'limit']):
-			df.at[vmCreateTime, 'delays'] += 1
+			df.at[vmCreateTime, 'delays'] += vm['vmcorecount']
 			vmCreateTime += delay
 			vmDeleteTime += delay
 
