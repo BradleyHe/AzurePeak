@@ -4,11 +4,11 @@ import matplotlib.pyplot as plt
 
 start = 0
 end = 172800
-window = 50
+window = 10
 interval = 900
 delay = 300
 percentage = 0.5
-stdMultiplier = -3
+stdMultiplier = 3
 
 headers = ['vmid','subscriptionid','deploymentid','vmcreated', 'vmdeleted', 'maxcpu', 'avgcpu', 'p95maxcpu', 'vmcategory', 'vmcorecount', 'vmmemory']
 data_path = 'vmtable.csv'
@@ -18,21 +18,17 @@ vmdata = data[['vmcreated', 'vmdeleted', 'vmcorecount']]
 vmdata = vmdata.sort_values('vmcreated')
 
 # for moving avg
-for num in range(0, 3):
-	graph.moving(vmdata, start, end, window, delay, stdMultiplier)
-	print('done ' + str(stdMultiplier))
-	stdMultiplier += 1
+graph.moving(vmdata, start, end, window, delay, stdMultiplier)
+# df = pd.read_csv('data/moving/moving_{0}to{1}_window={2}_delay={3}_multiplier={4}.csv'.format(start, end, window, delay, stdMultiplier))
+# df.set_index("time", inplace=True)
+# df.drop(df.tail(1).index, inplace=True)
 
-	# df = pd.read_csv('data/moving/moving_{0}to{1}_window={2}_delay={3}_multiplier={4}.csv'.format(start, end, window, delay, stdMultiplier))
-	# df.set_index("time", inplace=True)
-	# df.drop(df.tail(1).index, inplace=True)
+# fig_size = plt.rcParams["figure.figsize"]
+# fig_size[0] = 12
+# plt.rcParams["figure.figsize"] = fig_size
 
-	# fig_size = plt.rcParams["figure.figsize"]
-	# fig_size[0] = 12
-	# plt.rcParams["figure.figsize"] = fig_size
-
-	# df.drop(['STD', 'MA', 'delays'], axis=1).plot(ylim = (320000, 332000))
-	# plt.savefig('graphs/moving/moving_{0}to{1}_window={2}_delay={3}_multiplier={4}.jpg'.format(start, end, window, delay, stdMultiplier), figsize = (100, 4))
+# df.drop(['STD', 'MA', 'delays'], axis=1).plot(ylim = (320000, 332000))
+# plt.savefig('graphs/moving/moving_{0}to{1}_window={2}_delay={3}_multiplier={4}.jpg'.format(start, end, window, delay, stdMultiplier), figsize = (100, 4))
 
 # for set interval
 # graph.interval(vmdata, start, end, interval, delay)
