@@ -9,14 +9,17 @@ def getStats(df):
 	maxCores = []
 	percentileCores = []
 	delays = []
+	mean = []
 
 	for num in range(minTime, maxTime, 3600):
 		interval = df.loc[num : num + 3599, 'cores']
 		percentile = interval.quantile([0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9])
 
+
 		time.append(num)
 		minCores.append(interval.min())
 		maxCores.append(interval.max())
+		mean.append(interval.mean())
 		percentileCores.append(percentile.to_dict())
 		delays.append(df.loc[num : num + 3599, 'delays'].sum())
 
@@ -25,6 +28,7 @@ def getStats(df):
 	stats['maximum'] = maxCores
 	stats['percentiles'] = percentileCores
 	stats['delays'] = delays
+	stats['mean'] = mean
 
 	return stats
 
