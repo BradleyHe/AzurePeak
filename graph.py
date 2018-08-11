@@ -1,6 +1,9 @@
 import pandas as pd
 
-def getStats(df):
+def getStats(df, statsInterval):
+	if(readingsInterval % 100 != 0):
+		return "error, interval must be in hundreds of seconds"
+
 	minTime = df.index.values.min()
 	maxTime = df.index.values.max()
 
@@ -11,17 +14,16 @@ def getStats(df):
 	delays = []
 	mean = []
 
-	for num in range(minTime, maxTime, 3600):
-		interval = df.loc[num : num + 3599, 'cores']
+	for num in range(minTime, maxTime, statsInterval):
+		interval = df.loc[num : num + statsInterval, 'cores']
 		percentile = interval.quantile([0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9])
-
 
 		time.append(num)
 		minCores.append(interval.min())
 		maxCores.append(interval.max())
 		mean.append(interval.mean())
 		percentileCores.append(percentile.to_dict())
-		delays.append(df.loc[num : num + 3599, 'delays'].sum())
+		delays.append(df.loc[num : num + statsInterval, 'delays'].sum())
 
 	stats = pd.DataFrame(index = time, columns = ['minimum', 'maximum', 'percentiles'])
 	stats['minimum'] = minCores
@@ -32,7 +34,7 @@ def getStats(df):
 
 	return stats
 
-def moving(data, start, end, window, delay, stdMultiplier):
+def moving(data, start, end, window, delay, stdMultiplier, statsInterval):
 	if(start % 100 != 0):
 		return "error: start must be in hundreds of seconds"
 	if(end % 100 != 0):
@@ -91,7 +93,7 @@ def moving(data, start, end, window, delay, stdMultiplier):
 	df.sort_index(inplace = True)
 
 	stats = getStats(df)
-	stats.to_csv('stats/moving/moving_{0}to{1}_window={2}_delay={3}_multiplier={4}.csv'.format(start, end, window, delay, stdMultiplier))
+	stats.to_csv('stats/moving/moving_{0}to{1}_window={2}_delay={3}_multiplier={4}_statsInterval={5}.csv'.format(start, end, window, delay, stdMultiplier, statsInterval))
 	df.to_csv('data/moving/moving_{0}to{1}_window={2}_delay={3}_multiplier={4}.csv'.format(start, end, window, delay, stdMultiplier))
 
 def interval(data, start, end, interval, delay):
@@ -153,8 +155,8 @@ def interval(data, start, end, interval, delay):
 	df.sort_index(inplace = True)
 
 	stats = getStats(df)
-	stats.to_csv('stats/interval/interval_' + str(start) + 'to' + str(end) + '_interval=' + str(interval) + '_delay=' + str(delay) + '.csv')
-	df.to_csv('data/interval/interval_' + str(start) + 'to' + str(end) + '_interval=' + str(interval) + '_delay=' + str(delay) + '.csv')
+	stats.to_csv('stats/moving/moving_{0}to{1}interval={2}_delay={3}_statsInterval={4}.csv'.format(start, end, interval, delay, statsInterval))
+	df.to_csv('data/moving/moving_{0}to{1}_interval={2}_delay={3}.csv'.format(start, end, interval, delay))
 
 def globalMax(data, start, end, window, delay, percentage):
 	maximum = 0
@@ -241,5 +243,5 @@ def globalMax(data, start, end, window, delay, percentage):
 	df['max'] = newList
 
 	stats = getStats(df)
-	stats.to_csv('stats/globalMax/globalMax_' + str(start) + 'to' + str(end) + '_window=' + str(window) + '_delay=' + str(delay) + '_percentage=' + str(percentage) + '.csv')
-	df.to_csv('data/globalMax/globalMax_' + str(start) + 'to' + str(end) + '_window=' + str(window) + '_delay=' + str(delay) + '_percentage=' + str(percentage) + '.csv')
+	stats.to_csv('stats/moving/moving_{0}to{1}_window={2}_delay={3}_multiplier={4}_statsInterval={}.csv'.format(start, end, window, delay, percentage, statsInterval))
+	df.to_csv('data/moving/moving_{0}to{1}_window={2}_delay={3}_multiplier={4}.csv'.format(start, end, window, delay, percentage))
