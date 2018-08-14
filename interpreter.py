@@ -44,7 +44,7 @@ percentage85 = pd.read_csv('stats/globalMax/globalMax_0to172800_window=10_delay=
 percentage90 = pd.read_csv('stats/globalMax/globalMax_0to172800_window=10_delay=300_percentage=0.9_statsInterval={}.csv'.format(statsInterval), index_col = 0)
 
 df = pd.DataFrame(index = raw.index)
- 
+
 # moving method comparisons --------------------------------------------------------------
 # differences of local max of 1h - local min of 1h
 # positive indicates lesser peaks and dips, negative indicates greater peaks and dips
@@ -56,19 +56,19 @@ df = pd.DataFrame(index = raw.index)
 # df['50n1'] = rawDiff - (window50multn1['maximum'] - window50multn1['minimum'])
 
 # differences of local maximums 10 to 50
-df['10n1'] = raw['maximum'] - window10multn1['maximum']
-df['10p1'] = raw['maximum'] - window10mult1['maximum']
-df['10n2'] = raw['maximum'] - window10multn2['maximum']
-df['10p2'] = raw['maximum'] - window10mult2['maximum']
-df['20p1'] = raw['maximum'] - window20mult1['maximum']
-df['20n1'] = raw['maximum'] - window20multn1['maximum']
-df['20p2'] = raw['maximum'] - window20mult2['maximum']
-df['20n2'] = raw['maximum'] - window20multn2['maximum']
-df['50p1'] = raw['maximum'] - window50mult1['maximum']
-df['50n1'] = raw['maximum'] - window50multn1['maximum']
-df['50p2'] = raw['maximum'] - window50mult2['maximum']
-df['50n2'] = raw['maximum'] - window50multn2['maximum']
-filename = 'results/moving10to50_localmax-localmax_results_statsInterval={}'.format(statsInterval)
+# df['10n1'] = raw['maximum'] - window10multn1['maximum']
+# df['10p1'] = raw['maximum'] - window10mult1['maximum']
+# df['10n2'] = raw['maximum'] - window10multn2['maximum']
+# df['10p2'] = raw['maximum'] - window10mult2['maximum']
+# df['20p1'] = raw['maximum'] - window20mult1['maximum']
+# df['20n1'] = raw['maximum'] - window20multn1['maximum']
+# df['20p2'] = raw['maximum'] - window20mult2['maximum']
+# df['20n2'] = raw['maximum'] - window20multn2['maximum']
+# df['50p1'] = raw['maximum'] - window50mult1['maximum']
+# df['50n1'] = raw['maximum'] - window50multn1['maximum']
+# df['50p2'] = raw['maximum'] - window50mult2['maximum']
+# df['50n2'] = raw['maximum'] - window50multn2['maximum']
+# filename = 'results/localmax-localmax/moving10to50_localmax-localmax_results_statsInterval={}'.format(statsInterval)
 
 # 10 to 20
 # df['10n1'] = raw['maximum'] - window10multn1['maximum']
@@ -140,6 +140,7 @@ filename = 'results/moving10to50_localmax-localmax_results_statsInterval={}'.for
 # df['percentage80'] = raw['maximum'] - percentage80['maximum']
 # df['percentage70'] = raw['maximum'] - percentage70['maximum']
 # df['percentage60'] = raw['maximum'] - percentage60['maximum']
+# filename = 'results/localmax-localmax/global_localmax-localmax_results_statsInterval={}'.format(statsInterval)
 
 # mean
 # df['percentage90'] = percentage90['mean']
@@ -148,37 +149,49 @@ filename = 'results/moving10to50_localmax-localmax_results_statsInterval={}'.for
 # df['percentage70'] = percentage70['mean']
 # df['percentage60'] = percentage60['mean']
 # filename = 'results/global_mean_results_statsInterval={}'.format(statsInterval)
+
+# maximum
+# df['percentage90'] = percentage90['maximum']
+# df['percentage85'] = percentage85['maximum']
+# df['percentage80'] = percentage80['maximum']
+# df['percentage70'] = percentage70['maximum']
+# df['percentage60'] = percentage60['maximum']
+# filename = 'results/global_localmax_results_statsInterval={}'.format(statsInterval)
 # ----------------------------------------------------------------------------------------
 
 # multiple methods comparison --------------------------------------------------------------
 # differences of local maximums
-# df['10n1'] = raw['maximum'] - window10multn1['maximum']
-# df['10p1'] = raw['maximum'] - window10mult1['maximum']
-# df['20p1'] = raw['maximum'] - window20mult1['maximum']
-# df['20n1'] = raw['maximum'] - window20multn1['maximum']
+df['10p1'] = raw['maximum'] - window10mult1['maximum']
+df['10p2'] = raw['maximum'] - window10mult2['maximum']
+df['50p1'] = raw['maximum'] - window20mult1['maximum']
+# df['50p2'] = raw['maximum'] - window20mult2['maximum']
 # df['percentage90'] = raw['maximum'] - percentage90['maximum']
-# df['percentage85'] = raw['maximum'] - percentage85['maximum']
-# df['percentage80'] = raw['maximum'] - percentage80['maximum']
 # df['percentage70'] = raw['maximum'] - percentage70['maximum']
-# df['percentage60'] = raw['maximum'] - percentage60['maximum']
-# df['interval900'] = raw['maximum'] - interval900['maximum']
-# df['interval1800'] = raw['maximum'] - interval1800['maximum']
-# df['interval2700'] = raw['maximum'] - interval2700['maximum']
 # df['interval3600'] = raw['maximum'] - interval3600['maximum']
 # df['interval7200'] = raw['maximum'] - interval7200['maximum']
-# filename = 'results/moving+globalmax+interval_localmax-localmax_results_statsInterval={}'.format(statsInterval)
+# filename = 'results/localmax-localmax/moving+globalmax+interval_localmax-localmax_results_statsInterval={}'.format(statsInterval)
 
 # mean
-# df['10n1'] = window10multn1['mean']
 # df['10p1'] = window10mult1['mean']
-# df['20p1'] = window20mult1['mean']
-# df['20n1'] = window20multn1['mean']
+# df['10p2'] = window10mult2['mean']
+# df['50p1'] = window20mult1['mean']
+# df['50p2'] = window20mult2['mean']
 # df['percentage90'] = percentage90['mean']
-# df['percentage85'] = percentage85['mean']
-# df['percentage80'] = percentage80['mean']
 # df['percentage70'] = percentage70['mean']
-# df['percentage60'] = percentage60['mean']
-# filename = 'results/moving+globalmax+interval_mean_results_statsInterval={}'.format(statsInterval)
+# df['interval3600'] = interval3600['mean']
+# df['interval7200'] = interval7200['mean']
+# filename = 'results/mean/moving+globalmax+interval_mean_results_statsInterval={}'.format(statsInterval)
+
+# mean - mean
+# df['10p1'] = raw['mean'] - window10mult1['mean']
+# df['10p2'] = raw['mean'] - window10mult2['mean']
+# df['50p1'] = raw['mean'] - window20mult1['mean']
+# df['50p2'] = raw['mean'] - window20mult2['mean']
+# df['percentage90'] = raw['mean'] - percentage90['mean']
+# df['percentage70'] = raw['mean'] - percentage70['mean']
+# df['interval3600'] = raw['mean'] - interval3600['mean']
+# df['interval7200'] = raw['mean'] - interval7200['mean']
+# filename = 'results/moving+globalmax+interval_mean-mean_results_statsInterval={}'.format(statsInterval)
 # ----------------------------------------------------------------------------------------
 
 minValue = []
@@ -202,5 +215,5 @@ plt.savefig(filename + '.jpg')
 plt.show()
 
 print(df['min'].value_counts())
-print(df['max'].value_counts()) 
+print(df['max'].value_counts())
 df.to_csv(filename + '.csv')

@@ -1,0 +1,103 @@
+moving:
+	localmax-localmax counts:
+	(10p2,)                                                                     11
+	(50p1,)                                                                      7
+	(20p2,)                                                                      7
+	(50p2,)                                                                      3
+	(10n2,)                                                                      3
+	(50n2,)                                                                      3
+	(50n1,)                                                                      2
+	(10n1,)                                                                      2
+	(20p1,)                                                                      2
+	(10p2, 20p2)                                                                 1
+	(10n2, 20n2)                                                                 1
+	(10n1, 10p1, 10n2, 10p2, 20p1, 20n1, 20p2, 20n2, 50p1, 50n1, 50p2, 50n2)     1
+	(20n2, 50n2)                                                                 1
+	(10n1, 10n2)                                                                 1
+	(20n1,)                                                                      1
+	(50n1, 50n2)                                                                 1
+	(20n2,)                                                                      1
+	Name: min, dtype: int64
+	(50p1,)                                                                     11
+	(50p2,)                                                                      8
+	(10p2,)                                                                      7
+	(10p1,)                                                                      6
+	(20p1,)                                                                      4
+	(10n1,)                                                                      4
+	(20p2,)                                                                      2
+	(20n2,)                                                                      2
+	(10p2, 20p2, 50p2)                                                           1
+	(20n1,)                                                                      1
+	(10n2,)                                                                      1
+	(10n1, 10p1, 10n2, 10p2, 20p1, 20n1, 20p2, 20n2, 50p1, 50n1, 50p2, 50n2)     1
+	Name: max, dtype: int64	
+
+	mean:
+	(50n1,)         10
+	(50p1,)          7
+	(10p2,)          6
+	(10n2,)          5
+	(20p2,)          4
+	(20p1,)          3
+	(20n1,)          3
+	(50p2,)          3
+	(10n1,)          2
+	(20n2,)          2
+	(10p1,)          2
+	(10n2, 50n1)     1
+	Name: min, dtype: int64
+	(10p2,)                                       11
+	(50p1,)                                       10
+	(20p2,)                                        7
+	(50n1,)                                        6
+	(50p2,)                                        5
+	(20p1,)                                        3
+	(10p1,)                                        2
+	(10n1,)                                        2
+	(10p1, 10p2, 20p1, 20p2, 50p1, 50n1, 50p2)     1
+	(20n2,)                                        1
+	Name: max, dtype: int64
+
+
+global max:
+	localmax-localmax counts:
+	(percentage60,)                                                           20
+	(percentage90,)                                                            7
+	(percentage80,)                                                            6
+	(percentage90, percentage85, percentage80, percentage70, percentage60)     4
+	(percentage70, percentage60)                                               3
+	(percentage70,)                                                            3
+	(percentage85,)                                                            2
+	(percentage85, percentage80, percentage70)                                 1
+	(percentage90, percentage85, percentage80)                                 1
+	(percentage80, percentage70, percentage60)                                 1
+	Name: min, dtype: int64
+	(percentage90,)                                                           14
+	(percentage70,)                                                            9
+	(percentage90, percentage85)                                               5
+	(percentage60,)                                                            5
+	(percentage90, percentage85, percentage80, percentage70, percentage60)     4
+	(percentage85,)                                                            4
+	(percentage90, percentage85, percentage80, percentage70)                   3
+	(percentage80,)                                                            2
+	(percentage90, percentage85, percentage80)                                 2
+	Name: max, dtype: int64	
+	
+interval:
+	localmax-localmax counts:
+	(interval900,)                                                           35
+	(interval2700,)                                                           8
+	(interval7200,)                                                           2
+	(interval1800,)                                                           2
+	(interval900, interval1800, interval2700, interval3600, interval7200)     1
+	Name: min, dtype: int64
+	(interval7200,)                                                          25
+	(interval3600, interval7200)                                              9
+	(interval3600,)                                                           5
+	(interval2700,)                                                           5
+	(interval900,)                                                            1
+	(interval900, interval1800, interval2700, interval3600, interval7200)     1
+	(interval2700, interval3600)                                              1
+	(interval1800,)                                                           1
+	Name: max, dtype: int64
+
