@@ -1,6 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
+start = 0
+end = 172800
 statsInterval = 3600
 raw = pd.read_csv('stats/moving/moving_0to172800_window=10_delay=0_multiplier=1_statsInterval={}.csv'.format(statsInterval), index_col = 0)
 globalMin = 321181
@@ -43,7 +45,37 @@ percentage80 = pd.read_csv('stats/globalMax/globalMax_0to172800_window=10_delay=
 percentage85 = pd.read_csv('stats/globalMax/globalMax_0to172800_window=10_delay=300_percentage=0.85_statsInterval={}.csv'.format(statsInterval), index_col = 0)
 percentage90 = pd.read_csv('stats/globalMax/globalMax_0to172800_window=10_delay=300_percentage=0.9_statsInterval={}.csv'.format(statsInterval), index_col = 0)
 
+
 df = pd.DataFrame(index = raw.index)
+
+# performance calculator (finds the percentage of time where the method was effective)
+statsList = (window10mult1, window10mult2, window10mult3, window10multn1, window10multn2, window10multn3, window20mult1, window20mult2, window20mult3, window20multn1, window20multn2, window20multn3, 
+	 window50mult1, window50mult2, window50mult3, window50multn1, window50multn2, window50multn3, interval900, interval1800, interval2700, interval3600, interval7200, percentage60, percentage70, percentage80, percentage85, percentage90)
+
+split = "window10mult1, window10mult2, window10mult3, window10multn1, window10multn2, window10multn3, window20mult1, window20mult2, window20mult3, window20multn1, window20multn2, window20multn3, \
+	 window50mult1, window50mult2, window50mult3, window50multn1, window50multn2, window50multn3, interval900, interval1800, interval2700, interval3600, interval7200, percentage60, percentage70, percentage80, percentage85, percentage90".split(', ')
+
+list = []
+
+for stats in statsList:
+	lesser = 0
+
+	for index, row in stats.iterrows():
+		if row['maximum'] < raw.loc[index]['maximum']:
+			lesser += 1
+		if row['minimum'] < raw.loc[index]['minimum']:
+			lesser -= 1
+
+	list.append(lesser)
+
+statsDict = dict(zip(split, list))
+sortedValues = sorted(statsDict.values(), reverse = True)
+sortedKeys = sorted(statsDict, key = statsDict.get, reverse = True)
+
+output = open('lessermaximum-greatermaximum.txt', 'a+')
+
+for num in range(0, 28):
+	output.write(sortedKeys[num] + ': ' + str(sortedValues[num]) + '\n')
 
 # moving method comparisons --------------------------------------------------------------
 # differences of local max of 1h - local min of 1h
@@ -194,26 +226,26 @@ df['50p1'] = raw['maximum'] - window20mult1['maximum']
 # filename = 'results/moving+globalmax+interval_mean-mean_results_statsInterval={}'.format(statsInterval)
 # ----------------------------------------------------------------------------------------
 
-minValue = []
-maxValue = []
+# minValue = []
+# maxValue = []
 
-# i convert the numpy list here to a tuple in order to see the value counts, it is fine if you use the commented block instead (just comment out the print statements)
-for index, data in df.iterrows():
-	minValue.append(tuple(df.columns[(df == data.min()).loc[index]].tolist()))
-	maxValue.append(tuple(df.columns[(df == data.max()).loc[index]].tolist()))
-	# minValue.append(df.columns[(df == data.min()).loc[index]].tolist())
-	# maxValue.append(df.columns[(df == data.max()).loc[index]].tolist())
+# # i convert the numpy list here to a tuple in order to see the value counts, it is fine if you use the commented block instead (just comment out the print statements)
+# for index, data in df.iterrows():
+# 	minValue.append(tuple(df.columns[(df == data.min()).loc[index]].tolist()))
+# 	maxValue.append(tuple(df.columns[(df == data.max()).loc[index]].tolist()))
+# 	# minValue.append(df.columns[(df == data.min()).loc[index]].tolist())
+# 	# maxValue.append(df.columns[(df == data.max()).loc[index]].tolist())
 
-df['min'] = minValue
-df['max'] = maxValue
+# df['min'] = minValue
+# df['max'] = maxValue
 
-fig_size = plt.rcParams["figure.figsize"]
-fig_size[0] = 12
-plt.rcParams["figure.figsize"] = fig_size
-df.plot()
-plt.savefig(filename + '.jpg')
-plt.show()
+# fig_size = plt.rcParams["figure.figsize"]
+# fig_size[0] = 12
+# plt.rcParams["figure.figsize"] = fig_size
+# df.plot()
+# plt.savefig(filename + '.jpg')
+# plt.show()
 
-print(df['min'].value_counts())
-print(df['max'].value_counts())
-df.to_csv(filename + '.csv')
+# print(df['min'].value_counts())
+# print(df['max'].value_counts())
+# df.to_csv(filename + '.csv')
