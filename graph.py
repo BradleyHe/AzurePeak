@@ -1,11 +1,14 @@
 import pandas as pd
 
 def getStats(df, statsInterval):
-	if(readingsInterval % 100 != 0):
+	if(statsInterval % 100 != 0):
 		return "error, interval must be in hundreds of seconds"
 
 	minTime = df.index.values.min()
 	maxTime = df.index.values.max()
+
+	print(minTime)
+	print(maxTime)
 
 	time = []
 	minCores = []
@@ -22,7 +25,9 @@ def getStats(df, statsInterval):
 		minCores.append(interval.min())
 		maxCores.append(interval.max())
 		mean.append(interval.mean())
+		print(percentile.to_dict())
 		percentileCores.append(percentile.to_dict())
+		print(percentileCores)
 		delays.append(df.loc[num : num + statsInterval, 'delays'].sum())
 
 	stats = pd.DataFrame(index = time, columns = ['minimum', 'maximum', 'percentiles'])

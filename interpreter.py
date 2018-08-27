@@ -1,10 +1,13 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import ast
+from statistics import mean
 
 start = 0
 end = 172800
 statsInterval = 3600
 raw = pd.read_csv('stats/moving/moving_0to172800_window=10_delay=0_multiplier=1_statsInterval={}.csv'.format(statsInterval), index_col = 0)
+raw['percentiles'] = raw['percentiles'].map(ast.literal_eval)
 globalMin = 321181
 rawDiff = raw['maximum'] - raw['minimum']
 globalMinDiff = raw['maximum'] - globalMin
@@ -48,7 +51,7 @@ percentage90 = pd.read_csv('stats/globalMax/globalMax_0to172800_window=10_delay=
 
 df = pd.DataFrame(index = raw.index)
 
-# performance calculator (finds the percentage of time where the method was effective)
+# performance calculator (finds the amount of times where the method was effective)
 statsList = (window10mult1, window10mult2, window10mult3, window10multn1, window10multn2, window10multn3, window20mult1, window20mult2, window20mult3, window20multn1, window20multn2, window20multn3, 
 	 window50mult1, window50mult2, window50mult3, window50multn1, window50multn2, window50multn3, interval900, interval1800, interval2700, interval3600, interval7200, percentage60, percentage70, percentage80, percentage85, percentage90)
 
@@ -58,21 +61,31 @@ split = "window10mult1, window10mult2, window10mult3, window10multn1, window10mu
 list = []
 
 for stats in statsList:
+	stats['percentiles'] = stats['percentiles'].map(ast.literal_eval)
 	lesser = 0
+	differenceList = []
 
 	for index, row in stats.iterrows():
-		if row['maximum'] < raw.loc[index]['maximum']:
-			lesser += 1
-		if row['minimum'] < raw.loc[index]['minimum']:
-			lesser -= 1
+		# you can edit these based on what you want to compare
+		# if row['maximum'] < raw.loc[index]['maximum']:
+		#	lesser += 1
 
-	list.append(lesser)
+		# if row['percentiles'][0.9] > raw.loc[index]['percentiles'][0.9]:
+		# 	lesser -= 1
+
+		differenceList.append(raw.loc[index]['maximum'] - row['maximum'])
+
+	if len(differenceList) > 0:
+		list.append(mean(differenceList))
+
+	else:
+		list.append(0)
 
 statsDict = dict(zip(split, list))
 sortedValues = sorted(statsDict.values(), reverse = True)
 sortedKeys = sorted(statsDict, key = statsDict.get, reverse = True)
 
-output = open('lessermaximum-greatermaximum.txt', 'a+')
+output = open('lessermaximumcores.txt', 'a+')
 
 for num in range(0, 28):
 	output.write(sortedKeys[num] + ': ' + str(sortedValues[num]) + '\n')
